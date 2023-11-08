@@ -8,16 +8,24 @@ from scrape_books import scrape_books
 
 def scrape():
     """Scrape everything and return a list of books."""
-    return None
+    
+    book_urls = scrape_all_pages()
 
+    books_info = scrape_books(book_urls)
+
+    return books_info
 
 def write_books_to_csv(books, path):
-    pass
+    with open(path, 'w', newline='', encoding='utf-8') as csvfile:
+        writer = csv.DictWriter(csvfile, fieldnames=books[0].keys())
+        writer.writeheader()
+        writer.writerows(books)
 
 
 def write_books_to_jsonl(books, path):
-    pass
-
+    with open(path, 'w', encoding='utf-8') as jsonl_file:
+        for book in books:
+            jsonl_file.write(json.dumps(book) + '\n')
 
 if __name__ == "__main__":
 

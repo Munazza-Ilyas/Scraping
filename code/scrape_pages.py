@@ -3,14 +3,31 @@ from common import get_soup
 
 def scrape_page(num):
     """Takes a page and returns a list of links to the book that are on the page."""
+    base_url = f'http://books.toscrape.com/catalogue/page-{num}.html'
+    soup = get_soup(base_url)
 
-    return None
+    if soup:
+        links = [f'http://books.toscrape.com/catalogue/{link.a["href"]}' for link in soup.find_all('h3')]
+        return links
+    
+    return []  
 
 
 def scrape_all_pages():
     """Scrapes all pages, returning a list of book links."""
+    all_book_urls = []
+    page_number = 1
 
-    return None
+    while True:
+        book_urls = scrape_page(page_number)
+        
+        if not book_urls: 
+            break
+        else:
+            all_book_urls.extend(book_urls)
+            page_number += 1  
+    
+    return all_book_urls
 
 
 if __name__ == "__main__":
